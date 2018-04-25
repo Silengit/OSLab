@@ -48,11 +48,11 @@ struct GateDescriptor {
 };
 
 struct TrapFrame {
-    //uint32_t gs, fs, es, ds;
+    uint32_t gs, fs, es, ds;
     uint32_t edi, esi, ebp, xxx, ebx, edx, ecx, eax;
     uint32_t irq;                   // 中断号
-    //uint32_t error;                 // Error Code
-    //uint32_t eip, cs, eflags, esp, ss;
+    uint32_t error;                 // Error Code
+    uint32_t eip, cs, eflags, esp, ss;
 };
 
 

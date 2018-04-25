@@ -21,10 +21,10 @@ void enterUserSpace(uint32_t entry){
 
 	//initial the father process pdb
 
-	//pcb[1].tf.ss = USEL(SEG_UDATA1);
-	//pcb[1].tf.esp = 0x300000;
-	//pcb[1].tf.cs = USEL(SEG_UCODE1);
-	//pcb[1].tf.eip = entry;
+	pcb[1].tf.ss = USEL(SEG_UDATA1);
+	pcb[1].tf.esp = 0x300000;
+	pcb[1].tf.cs = USEL(SEG_UCODE1);
+	pcb[1].tf.eip = entry;
 	pcb[1].pid = distribute_pid();
 	pcb[1].state = RUNNING;
 
