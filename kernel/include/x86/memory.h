@@ -19,15 +19,26 @@
 #define SEG_KCODE   1           // Kernel code
 #define SEG_KDATA   2           // Kernel data/stack
 #define SEG_UCODE1   3           // User code
-#define SEG_UDATA1   4           // User data/stack
+#define SEG_UDATA   4           // User data/stack
 #define SEG_TSS     5           // Global unique task state segment
 #define SEG_VIDEO   6           // Video segment
 #define SEG_UCODE2   7           // User code
-#define SEG_UDATA2   8           // User data/stack
+//#define SEG_UDATA2   8           // User data/stack
 
 // Selectors
 #define KSEL(desc) (((desc) << 3) | DPL_KERN)
 #define USEL(desc) (((desc) << 3) | DPL_USER)
+
+#define mov2kernel {asm volatile("movl %0, %%eax":: "r"(KSEL(SEG_KDATA)));\
+	asm volatile("movw    %ax, %ds");\
+	asm volatile("movw    %ax, %es");\
+	asm volatile("movw    %ax, %fs");\
+	asm volatile("movw    %ax, %ss");}
+
+#define mov2user {asm volatile("movl %0, %%eax":: "r"(USEL(SEG_UDATA)));\
+	asm volatile("movw    %ax, %ds");\
+	asm volatile("movw    %ax, %es");\
+	asm volatile("movw    %ax, %fs");}
 
 //System call
 #define	SYS_write	4

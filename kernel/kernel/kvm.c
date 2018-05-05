@@ -32,9 +32,8 @@ void initSeg() {
 	gdt[SEG_KCODE] = SEG(STA_X | STA_R, 0,       0xffffffff, DPL_KERN);
 	gdt[SEG_KDATA] = SEG(STA_W,         0,       0xffffffff, DPL_KERN);
 	gdt[SEG_UCODE1] = SEG(STA_X | STA_R, 0,       0xffffffff, DPL_USER);
-	gdt[SEG_UDATA1] = SEG(STA_W,         0,       0xffffffff, DPL_USER);
-	gdt[SEG_UCODE2] = SEG(STA_X | STA_R, 200000,       0xffffffff, DPL_USER);
-	gdt[SEG_UDATA2] = SEG(STA_W,         200000,       0xffffffff, DPL_USER);
+	gdt[SEG_UDATA] = SEG(STA_W,         0,       0xffffffff, DPL_USER);
+	gdt[SEG_UCODE2] = SEG(STA_X | STA_R, PROCESS_SIZE,       0xffffffff, DPL_USER);
 	gdt[SEG_TSS] = SEG16(STS_T32A,      &tss, sizeof(TSS)-1, DPL_KERN);
 	gdt[SEG_TSS].s = 0;//s=0 means system
 	gdt[SEG_VIDEO] = SEG(STA_W,    0xb8000,       0xffffffff, DPL_KERN);
@@ -43,16 +42,12 @@ void initSeg() {
 	/*
 	 * 初始化TSS
 	 */
-	tss.esp0 = 0x200000; 
+	tss.esp0 = (uint32_t)&pcb[1].top_stack;
 	tss.ss0 = KSEL(SEG_KDATA);
 	asm volatile("ltr %%ax":: "a" (KSEL(SEG_TSS)));
 
 	/*设置正确的段寄存器*/
-	asm volatile("movl %0, %%eax":: "r"(KSEL(SEG_KDATA)));//kernel
-	asm volatile("movw    %ax, %ds");
-	asm volatile("movw    %ax, %es");
-	asm volatile("movw    %ax, %ss");
-	asm volatile("movw    %ax, %fs");
+	mov2kernel;
 	lLdt(0);
 	
 }
@@ -87,6 +82,7 @@ void loadUMain(void) {
 			}	
 		}
 	}
+
 	enterUserSpace(elf->entry);
 	
 }

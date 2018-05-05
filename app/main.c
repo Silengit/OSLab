@@ -4,6 +4,7 @@
 int data = 0;
 
 int uEntry(void) {
+	//printf("Hello!\n");
     int ret = fork();
     int i = 8;
     if (ret == 0) {

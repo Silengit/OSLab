@@ -11,6 +11,11 @@ irqGProtectFault:
 	pushl $0xd
 	jmp asmDoIrq
 
+.global irqTimerInterrupt
+irqTimerInterrupt:
+	pushl $0x20
+	jmp asmDoIrq
+
 .global irqSyscall
 irqSyscall:
 	pushl $0 // push dummy error code
