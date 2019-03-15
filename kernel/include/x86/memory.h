@@ -41,10 +41,15 @@
 	asm volatile("movw    %ax, %fs");}
 
 //System call
+#define	SYS_read	3
 #define	SYS_write	4
 #define	SYS_fork	2
 #define	SYS_sleep	88
 #define	SYS_exit	1
+#define SYS_pvinit	49
+#define	SYS_P		50
+#define	SYS_V		51
+#define SYS_pvdsty	52
 
 
 struct GateDescriptor {

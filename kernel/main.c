@@ -10,6 +10,7 @@ void kEntry(void) {
 	initSeg(); 		// initialize gdt, tss
 	initTimer(); 	// initialize timer
 	initPCB();		// initialize PCB
+	initSem();		// initialize Sem
 	loadUMain(); 	// load user program, enter user space
 
 	while(1);

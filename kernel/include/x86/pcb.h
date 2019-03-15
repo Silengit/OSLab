@@ -22,6 +22,10 @@
 //Idle
 #define IDLE_STACK 0x500000
 
+
+//Sleeptime
+#define MAX_SLEEP_TIME 0x100000
+
 //PID
 int cur_pid;
 int new_pcb_addr;
@@ -40,6 +44,7 @@ struct ProcessTable {
     int timeCount;
     int sleepTime;
     uint32_t pid;
+	struct ProcessTable *next;
 };
 
 struct ProcessTable pcb[MAX_PCB_NUM];
